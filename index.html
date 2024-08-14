@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Clicks</title>
+    <script>
+        async function sendClick(button) {
+            const response = await fetch('/store', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ button: button[0] })
+            });
+            console.log(await response.json());
+        }
+
+        async function getLastClick() {
+            const response = await fetch('/last');
+            const data = await response.json();
+            document.getElementById('lastClicked').innerText = 'Last Clicked: ' + data.button;
+        }
+
+        document.addEventListener('DOMContentLoaded', getLastClick);
+    </script>
+</head>
+<body>
+    <button onclick="sendClick('forward')">forward</button>
+    <button onclick="sendClick('backward')">backward</button>
+    <button onclick="sendClick('left')">left</button>
+    <button onclick="sendClick('right')">right</button>
+    <button onclick="sendClick('stop')">stop</button>
+
+    <div id="lastClicked"></div>
+</body>
+</html>
